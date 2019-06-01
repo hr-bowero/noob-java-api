@@ -18,6 +18,13 @@ public class Main {
 
     public static void main(String[] args) {
 
+        if (args.length == 0) {
+            System.out.println("This application requires you to give one paramater.");
+            System.out.println("Please use it like this:");
+            System.err.println("java -jar noob-api-0.1.0.jar BANKCODE");
+            System.exit(0);
+        }
+
         SpringApplication.run(Main.class, args);
 
         try {
@@ -35,11 +42,11 @@ public class Main {
             });
 
             // send message to websocket
-            String json = "[\"register\", \"slave\", \"robin\"]";
+            String json = "[\"register\", \"slave\", \"" + args[0] + "\"]";
             clientEndPoint.sendMessage(json);
 
             // send message to websocket
-            json = "[\"register\", \"master\", \"robin\"]";
+            json = "[\"register\", \"master\", \"" + args[0] + "\"]";
             clientEndPoint2.sendMessage(json);
 
         } catch (Exception e) {

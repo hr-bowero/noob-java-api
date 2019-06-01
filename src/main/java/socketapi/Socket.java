@@ -64,19 +64,19 @@ public class Socket {
         this.func = func;
     }
 
-    public void setIban(String func) {
+    public void setIban(String iban) {
         this.iban = iban;
     }
 
-    public void setRevBank(String func) {
+    public void setRevBank(String revBank) {
         this.revBank = revBank;
     }
 
-    public void setSenBank(String func) {
+    public void setSenBank(String senBank) {
         this.senBank = senBank;
     }
 
-    public void setPin(String func) {
+    public void setPin(String pin) {
         this.pin = pin;
     }
 
