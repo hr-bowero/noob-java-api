@@ -14,7 +14,7 @@ public class Main {
     static WebsocketClientEndpoint clientEndPoint;
     static WebsocketClientEndpoint clientEndPoint2;
 
-    private static String URL = "ws://185.224.91.138:80";
+    private static String URL = "ws://145.24.222.24:8080";
 
     public static void main(String[] args) {
 
@@ -37,7 +37,8 @@ public class Main {
             // add listener
             clientEndPoint.addMessageHandler(new WebsocketClientEndpoint.MessageHandler() {
                 public void handleMessage(String message) {
-                    new MessageHandler(message);
+                    System.out.println(message);
+                    return;
                 }
             });
 
