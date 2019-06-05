@@ -17,8 +17,8 @@ public class Main {
 
     private static String URL = "ws://185.224.91.138:80";
 
-    private static Session slave = null;
-    private static Session master = null;
+    public static Session slave;
+    public static Session master;
 
     @OnMessage
     public void onMessage(String message, Session slave) throws InterruptedException {
