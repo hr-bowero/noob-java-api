@@ -3,13 +3,13 @@ package socketapi;
 import java.net.URI;
 import javax.websocket.*;
 
-// import org.springframework.boot.SpringApplication;
-// import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Main
  */
-// @SpringBootApplication
+@SpringBootApplication
 @ClientEndpoint
 public class Main {
 
@@ -46,7 +46,7 @@ public class Main {
             System.exit(0);
         }
 
-        // SpringApplication.run(Main.class, args);
+        SpringApplication.run(Main.class, args);
 
         WebSocketContainer container = null;
 
