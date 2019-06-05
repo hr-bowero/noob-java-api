@@ -14,7 +14,7 @@ public class Main {
     static WebsocketClientEndpoint clientEndPoint;
     static WebsocketClientEndpoint clientEndPoint2;
 
-    private static String URL = "ws://145.24.222.24:8080";
+    private static String URL = "ws://185.224.91.138:80";
 
     public static void main(String[] args) {
 
@@ -28,19 +28,9 @@ public class Main {
         SpringApplication.run(Main.class, args);
 
         try {
-            clientEndPoint = new WebsocketClientEndpoint(
-                    new URI(URL));
+            clientEndPoint = new WebsocketClientEndpoint(new URI(URL));
 
-            clientEndPoint2 = new WebsocketClientEndpoint(
-                    new URI(URL));
-
-            // add listener
-            clientEndPoint.addMessageHandler(new WebsocketClientEndpoint.MessageHandler() {
-                public void handleMessage(String message) {
-                    System.out.println(message);
-                    return;
-                }
-            });
+            clientEndPoint2 = new WebsocketClientEndpoint(new URI(URL));
 
             // send message to websocket
             String json = "[\"register\", \"slave\", \"" + args[0] + "\"]";
@@ -52,6 +42,16 @@ public class Main {
 
         } catch (Exception e) {
             System.err.println("kutleef");
+        }
+
+        while (true) {
+            // add listener
+            clientEndPoint.addMessageHandler(new WebsocketClientEndpoint.MessageHandler() {
+                public void handleMessage(String message) {
+                    System.out.println(message);
+                    return;
+                }
+            });
         }
 
     }
