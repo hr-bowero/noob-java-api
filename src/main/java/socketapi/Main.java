@@ -1,20 +1,41 @@
 package socketapi;
 
 import java.net.URI;
+import javax.websocket.*;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+// import org.springframework.boot.SpringApplication;
+// import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Main
  */
-@SpringBootApplication
+// @SpringBootApplication
+@ClientEndpoint
 public class Main {
 
-    static WebsocketClientEndpoint clientEndPoint;
-    static WebsocketClientEndpoint clientEndPoint2;
+    private static Object waitLock = new Object();
 
     private static String URL = "ws://185.224.91.138:80";
+
+    private static Session slave = null;
+    private static Session master = null;
+
+    @OnMessage
+    public void onMessage(String message, Session slave) throws InterruptedException {
+        System.out.println("Received msg: " + message);
+        Main.slave.getAsyncRemote().sendText("[\"True\"]");
+        Thread.sleep(500);
+    }
+
+    private static void waitForTerminationSignal() {
+        synchronized (waitLock) {
+            try {
+                waitLock.wait();
+            } catch (InterruptedException exception) {
+                exception.printStackTrace();
+            }
+        }
+    }
 
     public static void main(String[] args) {
 
@@ -25,33 +46,38 @@ public class Main {
             System.exit(0);
         }
 
-        SpringApplication.run(Main.class, args);
+        // SpringApplication.run(Main.class, args);
+
+        WebSocketContainer container = null;
 
         try {
-            clientEndPoint = new WebsocketClientEndpoint(new URI(URL));
-
-            clientEndPoint2 = new WebsocketClientEndpoint(new URI(URL));
-
-            // send message to websocket
-            String json = "[\"register\", \"slave\", \"" + args[0] + "\"]";
-            clientEndPoint.sendMessage(json);
-
-            // send message to websocket
-            json = "[\"register\", \"master\", \"" + args[0] + "\"]";
-            clientEndPoint2.sendMessage(json);
+            container = ContainerProvider.getWebSocketContainer();
+            slave = container.connectToServer(Main.class, URI.create(URL));
+            slave.getAsyncRemote().sendText("[\"register\", \"slave\", \"" + args[0] + "\"]");
+            Thread.sleep(500);
+            master = container.connectToServer(Main.class, URI.create(URL));
+            master.getAsyncRemote().sendText("[\"register\", \"master\", \"" + args[0] + "\"]");
+            waitForTerminationSignal();
 
         } catch (Exception e) {
-            System.err.println("kutleef");
-        }
+            e.printStackTrace();
 
-        while (true) {
-            // add listener
-            clientEndPoint.addMessageHandler(new WebsocketClientEndpoint.MessageHandler() {
-                public void handleMessage(String message) {
-                    System.out.println(message);
-                    return;
+        } finally {
+            if (slave != null) {
+                try {
+                    slave.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
+            }
+
+            if (master != null) {
+                try {
+                    master.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
