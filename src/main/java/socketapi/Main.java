@@ -22,7 +22,7 @@ public class Main {
 
     @OnMessage
     public void onMessage(String message, Session slave) throws InterruptedException {
-        message = message.replaceAll("/", "");
+        message = message.replaceAll("\\", "");
         System.out.println("Received msg: " + message);
         Main.slave.getAsyncRemote().sendText("[\"True\"]");
         Thread.sleep(500);
