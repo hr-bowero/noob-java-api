@@ -22,7 +22,10 @@ public class Main {
 
     @OnMessage
     public void onMessage(String message, Session slave) throws InterruptedException {
-        message = message.replaceAll("\\", "");
+        message = message.replaceAll("\\\\", "");
+        if (message.startsWith("[\"{")) {
+            message = message.substring(2, message.length() - 2);
+        }
         System.out.println("Received msg: " + message);
         Main.slave.getAsyncRemote().sendText("[\"True\"]");
         Thread.sleep(500);
@@ -41,8 +44,8 @@ public class Main {
     public static void main(String[] args) {
 
         if (args.length == 0) {
-            System.out.println("This application requires you to give one paramater.");
-            System.out.println("Please use it like this:");
+            System.err.println("This application requires you to give one paramater.");
+            System.err.println("Please use it like this:");
             System.err.println("java -jar noob-api-0.1.0.jar BANKCODE");
             System.exit(0);
         }
@@ -54,9 +57,9 @@ public class Main {
         try {
             container = ContainerProvider.getWebSocketContainer();
             slave = container.connectToServer(Main.class, URI.create(URL));
+            master = container.connectToServer(Main.class, URI.create(URL));
             slave.getAsyncRemote().sendText("[\"register\", \"slave\", \"" + args[0] + "\"]");
             Thread.sleep(500);
-            master = container.connectToServer(Main.class, URI.create(URL));
             master.getAsyncRemote().sendText("[\"register\", \"master\", \"" + args[0] + "\"]");
             waitForTerminationSignal();
 
