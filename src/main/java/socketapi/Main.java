@@ -60,6 +60,28 @@ public class Main {
                     Main.slave.getAsyncRemote().sendText("[\"False\"]");
                 }
             }
+
+            /* Get important parameters */
+            if (jsonToString(jsonObject.get("Func")).equals("withdraw")) {
+
+                /* Set up the URL Parameters */
+                String iban = jsonToString(jsonObject.get("IBAN"));
+                String pin = jsonToString(jsonObject.get("PIN"));
+                String amount = jsonToString(jsonObject.get("Amount"));
+                String UrlParameters = "iban=" + iban + "&pin=" + pin + "&amount=" + amount;
+
+                boolean status = new JsonParser().parse(
+                        JavaPostRequest.sendPostRequest("https://bowero.nl/api/clients/transfer.php", UrlParameters))
+                        .getAsJsonObject().has("error");
+
+                if (!status) {
+                    /* Send true so the sender can continue */
+                    Main.slave.getAsyncRemote().sendText("[\"True\"]");
+                } else {
+                    /* Send true so the sender can continue */
+                    Main.slave.getAsyncRemote().sendText("[\"False\"]");
+                }
+            }
         }
 
         /* Sleep because we don't know if that does anything */
