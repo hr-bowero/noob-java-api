@@ -3,6 +3,10 @@ package socketapi;
 import java.net.URI;
 import javax.websocket.*;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -22,12 +26,43 @@ public class Main {
 
     @OnMessage
     public void onMessage(String message, Session slave) throws InterruptedException {
+
+        /* Remove all escaping characters */
         message = message.replaceAll("\\\\", "");
+
+        /* Cut off the JSON object */
         if (message.startsWith("[\"{")) {
             message = message.substring(2, message.length() - 2);
+
+            /* Convert to GSON Object */
+            JsonObject jsonObject = new JsonParser().parse(message).getAsJsonObject();
+
+            /* Get important parameters */
+            if (jsonToString(jsonObject.get("Func")).equals("pinCheck")) {
+
+                /* Set up the URL Parameters */
+                String iban = jsonToString(jsonObject.get("IBAN"));
+                String pin = jsonToString(jsonObject.get("PIN"));
+                String UrlParameters = "iban=" + iban + "&pin=" + pin;
+
+                int status = Integer
+                        .parseInt(
+                                jsonToString(new JsonParser()
+                                        .parse(JavaPostRequest.sendPostRequest(
+                                                "https://bowero.nl/api/clients/credentials.php", UrlParameters))
+                                        .getAsJsonObject().get("status")));
+
+                if (status == 0) {
+                    /* Send true so the sender can continue */
+                    Main.slave.getAsyncRemote().sendText("[\"True\"]");
+                } else {
+                    /* Send true so the sender can continue */
+                    Main.slave.getAsyncRemote().sendText("[\"False\"]");
+                }
+            }
         }
-        System.out.println("Received msg: " + message);
-        Main.slave.getAsyncRemote().sendText("[\"True\"]");
+
+        /* Sleep because we don't know if that does anything */
         Thread.sleep(500);
     }
 
@@ -39,6 +74,10 @@ public class Main {
                 exception.printStackTrace();
             }
         }
+    }
+
+    private static String jsonToString(JsonElement e) {
+        return e.toString().replaceAll("\"", "");
     }
 
     public static void main(String[] args) {

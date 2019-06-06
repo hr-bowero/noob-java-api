@@ -3,9 +3,6 @@ package socketapi;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.net.URI;
-import javax.websocket.*;
-
 import com.google.gson.Gson;
 
 public class Socket {
@@ -37,7 +34,6 @@ public class Socket {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -68,7 +64,6 @@ public class Socket {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
