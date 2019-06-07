@@ -10,35 +10,7 @@ public class Socket {
     public String func, iban, revBank, senBank, pin;
     public String amount;
 
-    public Socket(String revBank, String senBank, String func, String iban, String pin) {
-        this.func = func;
-        this.iban = iban;
-        this.revBank = revBank;
-        this.senBank = senBank;
-        this.pin = pin;
-
-        Request data = new Request();
-        data.Func = func;
-        data.IBAN = iban;
-        data.IDRecBank = revBank;
-        data.IDSenBank = senBank;
-        data.PIN = pin;
-        String json = new Gson().toJson(data);
-
-        List<String> mainData = new ArrayList<String>();
-        mainData.add(revBank);
-        mainData.add(json);
-        String mainJson = new Gson().toJson(mainData);
-
-        Main.master.getAsyncRemote().sendText(mainJson);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Socket(String func, String iban, String revBank, String senBank, String pin, String amount) {
+    public Socket(String revBank, String senBank, String func, String iban, String pin, String amount) {
         this.func = func;
         this.iban = iban;
         this.revBank = revBank;
