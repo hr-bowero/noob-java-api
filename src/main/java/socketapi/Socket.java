@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 public class Socket {
 
     public String func, iban, revBank, senBank, pin;
-    public double amount;
+    public String amount;
 
     public Socket(String revBank, String senBank, String func, String iban, String pin) {
         this.func = func;
@@ -38,7 +38,7 @@ public class Socket {
         }
     }
 
-    public Socket(String func, String iban, String revBank, String senBank, String pin, double amount) {
+    public Socket(String func, String iban, String revBank, String senBank, String pin, String amount) {
         this.func = func;
         this.iban = iban;
         this.revBank = revBank;
@@ -90,7 +90,7 @@ public class Socket {
         this.pin = pin;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
@@ -116,7 +116,7 @@ public class Socket {
         return pin;
     }
 
-    public double amount() {
+    public String amount() {
         return amount;
     }
 }

@@ -67,7 +67,7 @@ public class Main {
                 /* Set up the URL Parameters */
                 String iban = jsonToString(jsonObject.get("IBAN"));
                 String pin = jsonToString(jsonObject.get("PIN"));
-                String amount = jsonToString(jsonObject.get("Amount"));
+                String amount = jsonToString(jsonObject.get("amount"));
                 String UrlParameters = "iban=" + iban + "&pin=" + pin + "&amount=" + amount;
 
                 boolean status = new JsonParser().parse(
