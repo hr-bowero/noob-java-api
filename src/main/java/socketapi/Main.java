@@ -24,6 +24,8 @@ public class Main {
     public static Session slave;
     public static Session master;
 
+    public static boolean status;
+
     @OnMessage
     public void onMessage(String message, Session slave) throws InterruptedException {
 
@@ -81,6 +83,14 @@ public class Main {
                     /* Send true so the sender can continue */
                     Main.slave.getAsyncRemote().sendText("[\"False\"]");
                 }
+            }
+        } else {
+
+            /* It is true of false */
+            if (message.equals("['True']")) {
+                status = true;
+            } else {
+                status = false;
             }
         }
 

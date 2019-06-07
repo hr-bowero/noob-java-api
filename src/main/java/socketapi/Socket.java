@@ -7,8 +7,8 @@ import com.google.gson.Gson;
 
 public class Socket {
 
-    public String func, iban, revBank, senBank, pin;
-    public String amount;
+    public String func, iban, revBank, senBank, pin, amount;
+    public boolean status;
 
     public Socket(String revBank, String senBank, String func, String iban, String pin, String amount) {
         this.func = func;
@@ -38,6 +38,8 @@ public class Socket {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        setStatus(Main.status);
     }
 
     /* setters */
@@ -66,6 +68,10 @@ public class Socket {
         this.amount = amount;
     }
 
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     /* getters */
 
     public String setFunc() {
@@ -88,7 +94,11 @@ public class Socket {
         return pin;
     }
 
-    public String amount() {
+    public String getAmount() {
         return amount;
+    }
+
+    public boolean getStatus() {
+        return status;
     }
 }
