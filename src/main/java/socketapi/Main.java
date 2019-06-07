@@ -86,8 +86,10 @@ public class Main {
             }
         } else {
 
+            System.out.println(message);
+
             /* It is true of false */
-            if (message.equals("['True']")) {
+            if (message.equals("[\"True\"]")) {
                 status = true;
             } else {
                 status = false;
