@@ -19,7 +19,7 @@ public class Main {
 
     private static Object waitLock = new Object();
 
-    private static String URL = "ws://185.224.91.138:80";
+    private static String URL = "ws://145.24.222.24:8080";
 
     public static Session slave;
     public static Session master;
