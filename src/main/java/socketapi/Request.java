@@ -6,5 +6,5 @@ package socketapi;
 public class Request {
 
     public String IDRecBank, IDSenBank, Func, IBAN, PIN;
-    public String amount;
+    public String Amount;
 }

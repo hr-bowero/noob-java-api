@@ -24,7 +24,7 @@ public class Socket {
         data.IDRecBank = revBank;
         data.IDSenBank = senBank;
         data.PIN = pin;
-        data.amount = amount;
+        data.Amount = amount;
         String json = new Gson().toJson(data);
 
         List<String> mainData = new ArrayList<String>();
