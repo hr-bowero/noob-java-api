@@ -1,4 +1,7 @@
 # Noob Java API
+
+**This repository had been built for a school project and is not meant to be used any longer.**
+
 This API allows you to connect to the NOOB-server with a Java-application to keep the websockets alive. It also runs a Spring webserver, so you can send requests to it from your web-API.
 
 ## Installation
